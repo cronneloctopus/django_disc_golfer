@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    #url(r'^django_disc_golfer/', include('django_disc_golfer.foo.urls')),
+    url(r'^/', include('score_keeper.urls')),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
 
