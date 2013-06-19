@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+  {% for course in courses %}
+    <div class="one-third column course-box">
+        <h2>{{ course.name }}</h2>
+        <p>{{ course.description }}</p>
+        <p><a href="{{ course.get_absolute_url }}">Read more</a></p>
+    </div>
+  {% endfor %}
+
+
+{% endblock content %}

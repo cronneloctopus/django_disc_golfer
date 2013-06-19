@@ -2,11 +2,14 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     '',
-    #url(
-    #    r'^test/$',
-    #    direct_to_template, {
-    #        'template': '_test.html',
-    #    },
-    #    name='test'
-    #),
+    url(
+        r'^$',
+        'score_keeper.views.Index',
+        name='index'
+    ),
+    url(
+        r'^course/(?P<slug>[-\w]+)/$',
+        'score_keeper.views.CourseDetail',
+        name='course_detail'
+    ),
 )

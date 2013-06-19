@@ -1,15 +1,18 @@
 # Django settings for django_disc_golfer project.
 
-import os
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-PROJECT_ROOT = SITE_ROOT.replace('/disc_golfer/', '/')
+from os.path import join, abspath, dirname
 
+from unipath import Path
+SITE_URL = '/'
+
+PROJECT_DIR = Path(__file__).ancestor(2)
+LOGIN_REDIRECT_URL = SITE_URL
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Sam Clarke', 'cronneloctopus@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -25,6 +28,8 @@ DATABASES = {
         'PORT': '',                       # Set to empty string for default.
     }
 }
+
+AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -66,14 +71,17 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_DIR.child("static")
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = SITE_URL + 'static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    PROJECT_DIR.child('disc_golfer').child("static"),
+
+    #os.path.join(PROJECT_ROOT, 'score_keeper/static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -84,7 +92,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -94,7 +102,7 @@ SECRET_KEY = '1854bof%ihtnb#bm7@kplo7dh%6-=u39qb6c@qne&uz)++#e(m'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,7 +112,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'disc_golfer.urls'
@@ -113,10 +121,20 @@ ROOT_URLCONF = 'disc_golfer.urls'
 WSGI_APPLICATION = 'disc_golfer.wsgi.application'
 
 TEMPLATE_DIRS = (
-    'disc_golfer/templates/',
+    PROJECT_DIR.child("disc_golfer").child("templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
 )
 
 INSTALLED_APPS = (

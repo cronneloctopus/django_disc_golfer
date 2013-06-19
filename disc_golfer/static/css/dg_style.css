@@ -1,0 +1,79 @@
+h3 {
+    margin-bottom: 40px;
+}
+
+/* divs */
+#top-menu {
+    height: 30px;
+    background: #1d1d1d;
+    color: #efefef;
+    padding-top: 7px;
+    margin-bottom: 30px;
+}
+#score_form, #course_data {
+}
+#course_data {
+    background: white;
+    border: 0px solid #efefef;
+    border-bottom: 2px solid #efefef;
+}
+#score_chart {
+    margin-top: 50px;
+}
+
+/* classes */
+.course-box {
+    background: #efefef;
+}
+.clearing {
+    clear:both;
+}
+
+/* links */
+#top-menu a {
+    color: #D4D4D4;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+#top-menu a:hover {
+    color: white;
+}
+
+/* map */
+#map_canvas {
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+#map {
+    width: 100%;
+    height: 450px;
+    margin-left: 0px;
+}
+
+
+/* forms */
+#created {
+    position: relative; z-index: 100000;
+}
+
+
+/* tables */
+table {
+    width: 100%;
+}
+th {
+    background: #1d1d1d;
+}
+th strong {
+    color: white;
+}
+th, td {
+   border: 1px solid #efefef;
+}
+tr.odd {
+    background: #efefef;
+}
+tr td:first-child {
+    font-weight: bold;
+}

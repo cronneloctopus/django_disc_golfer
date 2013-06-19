@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+        <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/layout.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/skeleton.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/dg_style.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script>
+          $(function() {
+            $( "#created" ).datepicker();
+          });
+        </script>
+        
+      {% block extra_head %}
+      {% endblock extra_head %}
+    </head class='base'>
+
+    {# if there is a course location, init function #}
+    <body {% if course and course.lat and course.lon %}onload="init(){% endif %}">
+      <div class="container">  
+      <div id="top-menu" class="sixteen columns">
+        <a href="{% url 'index' %}">Home</a>
+
+          {% if request.user.is_authenticated %}
+            | <a href="/accounts/logout/">Sign Out</a>
+          {% else %}
+            | <a href="/accounts/login/">Sign In</a>
+          {% endif %}
+      </div><!-- end top-menu -->
+        
+          {% block content %}
+          {% endblock content %}
+
+      </div><!-- end container -->
+    </body>
+</html>

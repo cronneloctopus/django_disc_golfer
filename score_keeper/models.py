@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Course(models.Model):
@@ -16,6 +17,9 @@ class Course(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return settings.SITE_URL + 'course/' + self.slug
 
 
 class ScoreCard(models.Model):
