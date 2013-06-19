@@ -65,6 +65,7 @@ def Index(request, template_name='index.html'):
 
 
 def CourseDetail(request, slug, template_name='course_detail.html'):
+    data = None
     # check for map variable
     if request.GET.get('map'):
         request.session['map_provider'] = request.GET.get('map')
@@ -105,7 +106,8 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
     ).order_by('-created')
 
     # get all the score data we need!
-    data = get_score_data(all_scores)
+    if len(all_scores) > 0:
+        data = get_score_data(all_scores)
 
     return render_to_response(template_name, {
         'title': 'Course Detail -' + course.name,

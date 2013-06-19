@@ -31,7 +31,11 @@ var courseLon = undefined;
 </script>
 
 {% endblock extra_head %}
-
+<script>
+  $(function() {
+    $( "#id_created" ).datepicker();
+  });
+</script>
 {% block content %}
 
 <div class="sixteen columns">
@@ -70,68 +74,76 @@ var courseLon = undefined;
 </div>
 
 <div id="course_data" class="two-thirds column">
+
   <h3>Your {{ course.name }} data</h3>
-  {% if data.last_round %}
-    <p>Last Played: <strong>{{ data.last_round.created</strong></p>
-    <p>Last Score: <strong>{{ data.last_round.score }}</strong> ({{ data.last_round.baskets }} baskets)<p>
+
+  {% if data %}
+
+    {% if data.last_round %}
+      <p>Last Played: <strong>{{ data.last_round.created }}</strong></p>
+      <p>Last Score: <strong>{{ data.last_round.score }}</strong> ({{ data.last_round.baskets }} baskets)<p>
+    {% endif %}
+
+    <table>
+      <th></th>
+      <th><strong>Nine Baskets</strong></th>
+      <th><strong>Eighteen Baskets</strong></th>
+      <tr class="even">
+        <td>Best</td>
+        <td>
+          {% if data.nine_min %}
+              {{ data.nine_min }}
+          {% else %}No data
+          {% endif %}
+        </td>
+        <td>
+           {% if data.eighteen_min %}
+              {{ data.eighteen_min }} 
+          {% else %}No data
+          {% endif %}
+        </td>
+      </tr>
+      <tr class="odd">
+        <td>Worst</td>
+        <td>
+          {% if data.nine_max %}
+              {{ data.nine_max }}
+          {% else %}No data
+          {% endif %}
+        </td>
+        <td>
+           {% if data.eighteen_max %}
+              {{ data.eighteen_max }}
+          {% else %}No data
+          {% endif %}
+        </td>
+      </tr>
+      <tr class="even">
+        <td>Avg</td>
+        <td>
+          {% if data.nine_avg %}
+              {{ data.nine_avg }}
+              
+          {% else %}No data
+          {% endif %}
+        </td>
+        <td>
+          {% if data.eighteen_avg %}
+              {{ data.eighteen_avg }}
+              
+          {% else %}No data
+          {% endif %}
+        </td>
+      </tr>
+    </table> 
+
+    <div id="score_chart">
+    </div>
+
+  {% else %}
+  <h1>Hey! You need to play more!</h1>
+
   {% endif %}
-
-
-  <table>
-    <th></th>
-    <th><strong>Nine Baskets</strong></th>
-    <th><strong>Eighteen Baskets</strong></th>
-    <tr class="even">
-      <td>Best</td>
-      <td>
-        {% if data.nine_min %}
-            {{ data.nine_min }}
-        {% else %}No data
-        {% endif %}
-      </td>
-      <td>
-         {% if data.eighteen_min %}
-            {{ data.eighteen_min }} 
-        {% else %}No data
-        {% endif %}
-      </td>
-    </tr>
-    <tr class="odd">
-      <td>Worst</td>
-      <td>
-        {% if data.nine_max %}
-            {{ data.nine_max }}
-        {% else %}No data
-        {% endif %}
-      </td>
-      <td>
-         {% if data.eighteen_max %}
-            {{ data.eighteen_max }}
-        {% else %}No data
-        {% endif %}
-      </td>
-    </tr>
-    <tr class="even">
-      <td>Avg</td>
-      <td>
-        {% if data.nine_avg %}
-            {{ data.nine_avg }}
-            
-        {% else %}No data
-        {% endif %}
-      </td>
-      <td>
-        {% if data.eighteen_avg %}
-            {{ data.eighteen_avg }}
-            
-        {% else %}No data
-        {% endif %}
-      </td>
-    </tr>
-  </table> 
-
-  <div id="score_chart">
-  </div> 
 
 </div>
 

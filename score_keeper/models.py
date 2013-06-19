@@ -28,7 +28,7 @@ class ScoreCard(models.Model):
     """
     user = models.ForeignKey(User)
     course = models.ForeignKey(Course)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField()
     score = models.IntegerField()
     baskets = models.IntegerField()
     handicap = models.IntegerField(default=0)
