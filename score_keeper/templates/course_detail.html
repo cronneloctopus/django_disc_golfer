@@ -7,7 +7,7 @@
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 
-<!--<script type="text/javascript" src="{{ STATIC_URL }}js/score_chart.js"></script>-->
+<script type="text/javascript" src="{{ STATIC_URL }}js/score_chart.js"></script>
 
 {% if request.session.map_provider == 'google' %}
   <!-- google maps -->
@@ -27,6 +27,37 @@ var courseLon = undefined;
   courseLat = {{ course.lat }};
   courseLon = {{ course.lon }};
 {% endif %}
+
+//** CHART VARIABLES **//
+// nine baskets scores
+var nine_score_arr = new Array();
+
+  {% for d, v in data.nine_scores %}
+    arr = new Array();
+    // make UTC date from (year, month-1, day)
+    var year = {{ d|date:"Y" }};
+    var month = {{ d|date:"m" }};
+    var day = {{ d|date:"d" }};
+    arr.push(Date.UTC(year, month-1, day));
+    arr.push({{ v }});
+    nine_score_arr.push(arr);
+  {% endfor %}
+
+
+// eighteen basket scores
+var eighteen_score_arr = new Array();
+{% if data.eighteen_scores %}
+  {% for d, v in  data.eighteen_scores %}
+    // make UTC date from (year, month-1, day)
+    var year = {{ d|date:"Y" }};
+    var month = {{ d|date:"m" }};
+    var day = {{ d|date:"d" }};
+    arr.push(Date.UTC(year, month-1, day));
+    arr.push({{ v }});
+    eighteen_score_arr.push(arr);
+  {% endfor %}
+{% endif %}
+
 
 </script>
 
@@ -92,7 +123,7 @@ var courseLon = undefined;
         <td>Best</td>
         <td>
           {% if data.nine_min %}
-              {{ data.nine_min }}
+              {{ data.nine_min.1 }}
           {% else %}No data
           {% endif %}
         </td>
@@ -107,7 +138,7 @@ var courseLon = undefined;
         <td>Worst</td>
         <td>
           {% if data.nine_max %}
-              {{ data.nine_max }}
+              {{ data.nine_max.1 }}
           {% else %}No data
           {% endif %}
         </td>

@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
+BASKETS_CHOICE = (
+    (9, 'Nine'),
+    (18, 'Eighteen'),
+)
+
 
 class Course(models.Model):
     """
@@ -30,7 +35,9 @@ class ScoreCard(models.Model):
     course = models.ForeignKey(Course)
     created = models.DateTimeField()
     score = models.IntegerField()
-    baskets = models.IntegerField()
+    baskets = models.IntegerField(
+        choices=BASKETS_CHOICE, default=9
+    )
     handicap = models.IntegerField(default=0)
 
     def __unicode__(self):

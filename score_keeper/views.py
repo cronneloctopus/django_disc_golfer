@@ -20,19 +20,11 @@ def get_score_data(all_scores):
         for card in all_scores:
             if card.baskets == 9 and card.score:
                 nine_count += 1
-                # make time tuple
-                tt = card.created.timetuple()
-                dt = (tt[0], tt[1], tt[2])
-                # update dictionary
-                nine_scores.append((dt, card.score))
+                nine_scores.append((card.created, card.score))
                 data['nine_sum'] += card.score
             elif card.baskets == 18 and card.score:
                 eighteen_count += 1
-                # make time tuple
-                tt = card.created.timetuple()
-                dt = (tt[0], tt[1], tt[2])
-                # update dictionary
-                eighteen_scores.append((dt, card.score))
+                eighteen_scores.append((card.created, card.score))
                 data['eighteen_sum'] += card.score
 
         data['nine_scores'] = nine_scores
@@ -74,19 +66,22 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
     form = ScoreModelForm(request.POST or None)
     # validate and submit form data
     if form.is_valid():
-        course_score = ScoreCard(
+        updated = ScoreCard.objects.filter(
+            created=form.cleaned_data['created'],
+            course=course,
             user=request.user,
-            score=form.score.data,
-            baskets=form.baskets.data,
-            course=course
-        )
-        if course_score.created:
-            course_score.created = form.created.data
-        course_score.save()
+            baskets=form.cleaned_data['baskets']
+        ).update(**form.cleaned_data)
 
-        messages.add_message(
-            request, messages.INFO, 'Thanks for submitting a score!'
-        )
+        if updated == 0:
+            score = form.save(commit=False)
+            score.course = course
+            score.user = request.user
+            score.save()
+
+            messages.add_message(
+                request, messages.INFO, 'Thanks for submitting a score!'
+            )
 
         # TODO: send email to user
         # TODO: use celery to offload to queue
