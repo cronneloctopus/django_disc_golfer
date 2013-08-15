@@ -17,6 +17,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -28,6 +29,7 @@ DATABASES = {
         'PORT': '',                       # Set to empty string for default.
     }
 }
+"""
 
 AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 
@@ -193,3 +195,12 @@ try:
 except ImportError:
     import sys
     print >>sys.stderr, 'No local settings.'
+
+
+### HEROKU ####
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://sam:darwin3000@localhost/disc_golf'
+    )
+}

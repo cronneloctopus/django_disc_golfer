@@ -1,0 +1,38 @@
+[
+{
+  "pk": 1, 
+  "model": "score_keeper.course", 
+  "fields": {
+    "par": 27, 
+    "name": "Queen Elizabeth Park", 
+    "lon": -123.10657, 
+    "lat": 49.239314, 
+    "slug": "queen-elizabeth-park", 
+    "description": "Queen Eilzabeth Park, centrally located"
+  }
+},
+{
+  "pk": 2, 
+  "model": "score_keeper.course", 
+  "fields": {
+    "par": 27, 
+    "name": "Quilchena", 
+    "lon": -123.148222, 
+    "lat": 49.243607, 
+    "slug": "quilchena", 
+    "description": "Quelchena Park"
+  }
+},
+{
+  "pk": 34, 
+  "model": "score_keeper.course", 
+  "fields": {
+    "par": 27, 
+    "name": "Jerico Park", 
+    "lon": -123.200316, 
+    "lat": 49.267539, 
+    "slug": "jerico-park", 
+    "description": "Short but challenging hillside layout, with mature trees and groomed grass fairways. Spectacular view of city, mountains, and harbour from 7th tee. Few signs, maps at board by 1st tee."
+  }
+}
+]
