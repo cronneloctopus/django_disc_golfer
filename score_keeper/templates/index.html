@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
+  <div class="row-fluid">
+        
   {% for course in courses %}
-    <div class="one-third column course-box">
+    <div class="span4 course-box">
         <h2>{{ course.name }}</h2>
         <p>{{ course.description }}</p>
         <p><a href="{{ course.get_absolute_url }}">Read more</a></p>
     </div>
   {% endfor %}
 
+  </div>
 
 {% endblock content %}

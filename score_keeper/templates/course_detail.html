@@ -67,123 +67,119 @@ var eighteen_score_arr = new Array();
     $( "#id_created" ).datepicker();
   });
 </script>
-{% block content %}
 
-<div class="sixteen columns">
+
+{% block content %}
 
   {# form errors #}
 
   <h1>{{ course.name }}</h1>
-</div><!-- end wrapper -->
 
-<div class="sixteen columns">
   <p>Map Provider: <a href=".?map=google">Google</a> | <a href=".?map=osm">OpenLayers</a></p>
   <div id="map-canvas" class="sixteen columns"></div>
   <div id="map" class="sixteen columns"></div>
-</div>
 
-<div class="clearing" style="margin-bottom:30px"></div>
+  <div class="clearing" style="margin-bottom:30px"></div>
 
 
-{% if request.user.is_authenticated %}
+  {% if request.user.is_authenticated %}
 
-<div class="sixteen columns">
-  <p>{{ course.description }}</p>
-  <hr />
-</div>
+    <p>{{ course.description }}</p>
+    <hr />
 
-<div id="score_form" class="one-third column">
-  <h3>Record your score</h3>
-    <form method="POST" action=".">
+  <div class="row-fluid">
+    <div class="span4">
+      <h3>Record your score</h3>
+      <form method="POST" action=".">
 
-      {% csrf_token %}
+        {% csrf_token %}
 
-        {{ form.as_p }}
+          {{ form.as_p }}
 
-      <p><input type="submit" value="Submit Score">
-    </form>
-</div>
-
-<div id="course_data" class="two-thirds column">
-
-  <h3>Your {{ course.name }} data</h3>
-
-  {% if data %}
-
-    {% if data.last_round %}
-      <p>Last Played: <strong>{{ data.last_round.created }}</strong></p>
-      <p>Last Score: <strong>{{ data.last_round.score }}</strong> ({{ data.last_round.baskets }} baskets)<p>
-    {% endif %}
-
-    <table>
-      <th></th>
-      <th><strong>Nine Baskets</strong></th>
-      <th><strong>Eighteen Baskets</strong></th>
-      <tr class="even">
-        <td>Best</td>
-        <td>
-          {% if data.nine_min %}
-              {{ data.nine_min.1 }}
-          {% else %}No data
-          {% endif %}
-        </td>
-        <td>
-           {% if data.eighteen_min %}
-              {{ data.eighteen_min }} 
-          {% else %}No data
-          {% endif %}
-        </td>
-      </tr>
-      <tr class="odd">
-        <td>Worst</td>
-        <td>
-          {% if data.nine_max %}
-              {{ data.nine_max.1 }}
-          {% else %}No data
-          {% endif %}
-        </td>
-        <td>
-           {% if data.eighteen_max %}
-              {{ data.eighteen_max }}
-          {% else %}No data
-          {% endif %}
-        </td>
-      </tr>
-      <tr class="even">
-        <td>Avg</td>
-        <td>
-          {% if data.nine_avg %}
-              {{ data.nine_avg }}
-              
-          {% else %}No data
-          {% endif %}
-        </td>
-        <td>
-          {% if data.eighteen_avg %}
-              {{ data.eighteen_avg }}
-              
-          {% else %}No data
-          {% endif %}
-        </td>
-      </tr>
-    </table> 
-
-    <div id="score_chart">
+        <p><input type="submit" value="Submit Score">
+      </form>
     </div>
 
+    <div id="course_data" class="span8">
+
+    <h3>Your {{ course.name }} data</h3>
+
+    {% if data %}
+
+      {% if data.last_round %}
+        <p>Last Played: <strong>{{ data.last_round.created }}</strong></p>
+        <p>Last Score: <strong>{{ data.last_round.score }}</strong> ({{ data.last_round.baskets }} baskets)<p>
+      {% endif %}
+
+      <table>
+        <th></th>
+        <th><strong>Nine Baskets</strong></th>
+        <th><strong>Eighteen Baskets</strong></th>
+        <tr class="even">
+          <td>Best</td>
+          <td>
+            {% if data.nine_min %}
+                {{ data.nine_min.1 }}
+            {% else %}No data
+            {% endif %}
+          </td>
+          <td>
+             {% if data.eighteen_min %}
+                {{ data.eighteen_min }} 
+            {% else %}No data
+            {% endif %}
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>Worst</td>
+          <td>
+            {% if data.nine_max %}
+                {{ data.nine_max.1 }}
+            {% else %}No data
+            {% endif %}
+          </td>
+          <td>
+             {% if data.eighteen_max %}
+                {{ data.eighteen_max }}
+            {% else %}No data
+            {% endif %}
+          </td>
+        </tr>
+        <tr class="even">
+          <td>Avg</td>
+          <td>
+            {% if data.nine_avg %}
+                {{ data.nine_avg }}
+                
+            {% else %}No data
+            {% endif %}
+          </td>
+          <td>
+            {% if data.eighteen_avg %}
+                {{ data.eighteen_avg }}
+                
+            {% else %}No data
+            {% endif %}
+          </td>
+        </tr>
+      </table> 
+
+      <div id="score_chart">
+      </div>
+
+    {% else %}
+    <h1>Hey! You need to play more!</h1>
+
+    {% endif %}
+
+  </div>
+
+
   {% else %}
-  <h1>Hey! You need to play more!</h1>
-
+  <div>
+    <h1>Sign in to start recording you scores for {{ course.name }}!</h1> 
+  </div>
   {% endif %}
-
-</div>
-
-
-{% else %}
-<div>
-  <h1>Sign in to start recording you scores for {{ course.name }}!</h1> 
-</div>
-{% endif %}
 
 
   
