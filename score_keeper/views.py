@@ -57,6 +57,7 @@ def Index(request, template_name='index.html'):
 
 
 def CourseDetail(request, slug, template_name='course_detail.html'):
+    all_scores = None
     data = None
     # check for map variable
     if request.GET.get('map'):
@@ -96,13 +97,14 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
         """
 
     # get course data
-    all_scores = ScoreCard.objects.all().filter(course=course).filter(
-        user=request.user
-    ).order_by('-created')
+    if request.user.is_authenticated():
+        all_scores = ScoreCard.objects.all().filter(course=course).filter(
+            user=request.user
+        ).order_by('-created')
 
-    # get all the score data we need!
-    if len(all_scores) > 0:
-        data = get_score_data(all_scores)
+        # get all the score data we need!
+        if len(all_scores) > 0:
+            data = get_score_data(all_scores)
 
     return render_to_response(template_name, {
         'title': 'Course Detail -' + course.name,
