@@ -26,21 +26,3 @@ class Course(models.Model):
     def get_absolute_url(self):
         return settings.SITE_URL + 'course/' + self.slug
 
-
-class ScoreCard(models.Model):
-    """
-    Model for user scores by course.
-    """
-    user = models.ForeignKey(User)
-    course = models.ForeignKey(Course)
-    created = models.DateTimeField()
-    score = models.IntegerField()
-    baskets = models.IntegerField(
-        choices=BASKETS_CHOICE, default=9
-    )
-    handicap = models.IntegerField(default=0)
-
-    def __unicode__(self):
-        return "%s | %s | %s (%s)" % (
-            self.user, self.course, self.score, self.baskets
-        )
