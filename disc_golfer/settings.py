@@ -8,7 +8,7 @@ SITE_URL = '/'
 PROJECT_DIR = Path(__file__).ancestor(2)
 LOGIN_REDIRECT_URL = SITE_URL
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
