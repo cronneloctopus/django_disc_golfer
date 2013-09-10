@@ -25,10 +25,14 @@ h3 {
     margin: 0px;
     width: 940px;
 }
+#main-content {
+    margin-top: 80px;
+}
 
 /* classes */
 .course-box {
     background: #efefef;
+    border: 1px solid white;
     padding: 8px;
 }
 .clearing {
