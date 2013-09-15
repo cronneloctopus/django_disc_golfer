@@ -146,8 +146,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'django_extensions',
+    #'registration',
+    #'django_extensions',
     'score_keeper',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -190,12 +190,13 @@ LOGGING = {
 
 
 # importing local settings if they exist.
+"""
 try:
     from local_settings import *
 except ImportError:
     import sys
     print >>sys.stderr, 'No local settings.'
-
+"""
 
 ### HEROKU ####
 import dj_database_url
