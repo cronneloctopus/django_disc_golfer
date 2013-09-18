@@ -5,7 +5,7 @@ from os.path import join, abspath, dirname
 from unipath import Path
 SITE_URL = '/'
 
-PROJECT_DIR = Path(__file__).ancestor(2)
+PROJECT_DIR = Path(__file__).ancestor(3)
 LOGIN_REDIRECT_URL = SITE_URL
 
 DEBUG = True
@@ -17,19 +17,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'disc_golf',                       # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'sam',
-        'PASSWORD': 'darwin3000',
-        'HOST': '',                       # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                       # Set to empty string for default.
-    }
-}
-"""
 
 AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 
@@ -47,7 +34,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -124,6 +111,7 @@ WSGI_APPLICATION = 'disc_golfer.wsgi.application'
 
 TEMPLATE_DIRS = (
     PROJECT_DIR.child("disc_golfer").child("templates"),
+    PROJECT_DIR.child("allauth").child("templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -137,25 +125,67 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+    # allauth
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'registration',
-    #'django_extensions',
+)
+
+THIRD_PARTY_APPS = (
+    'django_extensions',
     'score_keeper',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'score_keeper',
     'south',
 )
+
+LOCAL_APPS = (
+    'score_keeper',
+)
+
+ALLAUTH_APPS = (
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    #'allauth.socialaccount.providers.bitly',
+    #'allauth.socialaccount.providers.dropbox',
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.linkedin',
+    #'allauth.socialaccount.providers.openid',
+    #'allauth.socialaccount.providers.persona',
+    #'allauth.socialaccount.providers.soundcloud',
+    #'allauth.socialaccount.providers.stackexchange',
+    #'allauth.socialaccount.providers.twitch',
+    #'allauth.socialaccount.providers.twitter',
+    #'allauth.socialaccount.providers.vimeo',
+    #'allauth.socialaccount.providers.vk',
+    #'allauth.socialaccount.providers.weibo',
+)
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + ALLAUTH_APPS
+
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
 
 ACCOUNT_ACTIVATION_DAYS = 7   # One-week activation window;
 
@@ -188,15 +218,6 @@ LOGGING = {
     }
 }
 
-
-# importing local settings if they exist.
-"""
-try:
-    from local_settings import *
-except ImportError:
-    import sys
-    print >>sys.stderr, 'No local settings.'
-"""
 
 ### HEROKU ####
 import dj_database_url

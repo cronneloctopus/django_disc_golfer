@@ -1,0 +1,4 @@
+Requirement already satisfied (use --upgrade to upgrade): requests-oauthlib in /home/sam/.envs/disc-golfer-python3/lib/python2.7/site-packages
+Requirement already satisfied (use --upgrade to upgrade): oauthlib>=0.4.2 in /home/sam/.envs/disc-golfer-python3/lib/python2.7/site-packages (from requests-oauthlib)
+Requirement already satisfied (use --upgrade to upgrade): requests>=1.0.0 in /home/sam/.envs/disc-golfer-python3/lib/python2.7/site-packages (from requests-oauthlib)
+Cleaning up...

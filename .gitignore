@@ -1,2 +1,2 @@
 *.pyc
-/disc_golfer/local_settings.py
+/disc_golfer/settings/local.py
