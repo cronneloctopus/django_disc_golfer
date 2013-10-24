@@ -1,9 +1,24 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import messages
+from django.db.models import Avg, Max, Min
 
 from .models import Course, ScoreCard
 from .forms import ScoreModelForm
+
+
+def get_scores_by_round(user, course):
+        all_scores = ScoreCard.objects.filter(
+            user=user, course=course
+        )
+        if all_scores:
+            nine_scores = all_scores.filter(baskets=9).aggregate(
+                Avg('score'), Max('score'), Min('score')
+            )
+            eighteen_scores = all_scores.filter(baskets=18).aggregate(
+                Avg('score'), Max('score'), Min('score')
+            )
+        return nine_scores, eighteen_scores
 
 
 def get_score_data(all_scores):
@@ -57,8 +72,6 @@ def Index(request, template_name='index.html'):
 
 
 def CourseDetail(request, slug, template_name='course_detail.html'):
-    all_scores = None
-    data = None
     # check for map variable
     if request.GET.get('map'):
         request.session['map_provider'] = request.GET.get('map')
@@ -104,7 +117,7 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
 
         # get all the score data we need!
         if len(all_scores) > 0:
-            nine_scores, eighteen_scores = ScoreCard.get_scores_by_round(
+            nine_scores, eighteen_scores = get_scores_by_round(
                 user=request.user, course=course
             )
     return render_to_response(template_name, {
