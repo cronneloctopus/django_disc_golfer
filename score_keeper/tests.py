@@ -48,5 +48,11 @@ class ScoreKeeperTest(TestCase):
         )
         self.assertEqual(avg, 3)
 
+    def test_get_nine_stats(self):
+        nine_stats = self.userprofile.get_nine_stats(
+            course=self.course
+        )
+        print nine_stats
+
     def test_course_url(self):
         pass

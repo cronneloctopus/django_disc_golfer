@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Min, Max
 from django.conf import settings
 from datetime import datetime
 
@@ -64,3 +64,16 @@ class UserProfile(User):
             Sum('baskets')
         )
         return sum_scores.get('score__sum') / sum_baskets.get('baskets__sum')
+
+    def get_nine_stats(self, course):
+        nine_stats = list(
+            ScoreCard.objects.values('created', 'score')
+            .order_by('score')
+        )
+        nine_max = nine_stats[-1]
+        nine_min = nine_stats[0]
+        nine avg = [(x, x) for x in nine_stats]
+        #nine_stats = ScoreCard.objects.filter(course=course) \
+        #    .filter(baskets=9) \
+        #    .aggregate(Avg('score'), Max('score'), Min('score'))
+        return list(nine_stats)
