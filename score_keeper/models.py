@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum, Avg, Min, Max
+from django.db.models import Sum
 from django.conf import settings
-from datetime import datetime
-from django.utils.timezone import utc
+from django.utils import timezone
 
 
 BASKETS_CHOICE = (
@@ -39,9 +38,7 @@ class ScoreCard(models.Model):
     """
     user = models.ForeignKey(User)
     course = models.ForeignKey(Course)
-    created = models.DateTimeField(
-        default=datetime.utcnow().replace(tzinfo=utc)
-    )
+    created = models.DateTimeField(default=timezone.now())
     score = models.IntegerField()
     baskets = models.IntegerField(
         choices=BASKETS_CHOICE, default=9
