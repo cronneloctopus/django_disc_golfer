@@ -1,7 +1,5 @@
 # Django settings for django_disc_golfer project.
 
-from os.path import join, abspath, dirname
-
 from unipath import Path
 SITE_URL = '/'
 
@@ -111,7 +109,6 @@ WSGI_APPLICATION = 'disc_golfer.wsgi.application'
 
 TEMPLATE_DIRS = (
     PROJECT_DIR.child("disc_golfer").child("templates"),
-    PROJECT_DIR.child("allauth").child("templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -125,9 +122,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    # allauth
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 DJANGO_APPS = (
@@ -153,38 +147,7 @@ LOCAL_APPS = (
     'score_keeper',
 )
 
-ALLAUTH_APPS = (
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    # ... include the providers you want to enable:
-    #'allauth.socialaccount.providers.bitly',
-    #'allauth.socialaccount.providers.dropbox',
-    #'allauth.socialaccount.providers.facebook',
-    #'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.google',
-    #'allauth.socialaccount.providers.linkedin',
-    #'allauth.socialaccount.providers.openid',
-    #'allauth.socialaccount.providers.persona',
-    #'allauth.socialaccount.providers.soundcloud',
-    #'allauth.socialaccount.providers.stackexchange',
-    #'allauth.socialaccount.providers.twitch',
-    #'allauth.socialaccount.providers.twitter',
-    #'allauth.socialaccount.providers.vimeo',
-    #'allauth.socialaccount.providers.vk',
-    #'allauth.socialaccount.providers.weibo',
-)
-
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + ALLAUTH_APPS
-
-
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
 ACCOUNT_ACTIVATION_DAYS = 7   # One-week activation window;
@@ -223,6 +186,6 @@ LOGGING = {
 import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://sam:darwin3000@localhost/disc_golf'
+        default='postgres://django:darwin3000@localhost/disc_golf'
     )
 }

@@ -104,12 +104,14 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
 
         # get all the score data we need!
         if len(all_scores) > 0:
-            data = get_score_data(all_scores)
-
+            nine_scores, eighteen_scores = ScoreCard.get_scores_by_round(
+                user=request.user, course=course
+            )
     return render_to_response(template_name, {
         'title': 'Course Detail -' + course.name,
         'course': course,
         'form': form,
-        'data': data,
+        'nine_scores': nine_scores,
+        'eighteen_scores': eighteen_scores,
         'all_scores': all_scores,
     }, RequestContext(request))

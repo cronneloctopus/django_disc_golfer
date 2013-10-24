@@ -1,16 +1,17 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
+from .models import Course
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class ScoreKeeperTest(TestCase):
+    def setUp(self):
+        self.course = Course.objects.create(
+            name='jerico_park',
+            lat=float(49.267539),
+            lon=float(-123.200316),
+        )
+
+    def test_can_create_course(self):
+        self.assertEqual(self.course.name, 'jerico_park')
+
+    def test_course_url(self):
+        pass
