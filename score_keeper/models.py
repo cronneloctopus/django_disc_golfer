@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum, Avg, Min, Max
 from django.conf import settings
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 BASKETS_CHOICE = (
@@ -38,7 +39,9 @@ class ScoreCard(models.Model):
     """
     user = models.ForeignKey(User)
     course = models.ForeignKey(Course)
-    created = models.DateTimeField(default=datetime.now)
+    created = models.DateTimeField(
+        default=datetime.utcnow().replace(tzinfo=utc)
+    )
     score = models.IntegerField()
     baskets = models.IntegerField(
         choices=BASKETS_CHOICE, default=9
@@ -66,14 +69,15 @@ class UserProfile(User):
         return sum_scores.get('score__sum') / sum_baskets.get('baskets__sum')
 
     def get_nine_stats(self, course):
-        nine_stats = list(
+        qs = list(
             ScoreCard.objects.values('created', 'score')
+            .filter(baskets=9)
             .order_by('score')
         )
-        nine_max = nine_stats[-1]
-        nine_min = nine_stats[0]
-        nine avg = [(x, x) for x in nine_stats]
-        #nine_stats = ScoreCard.objects.filter(course=course) \
-        #    .filter(baskets=9) \
-        #    .aggregate(Avg('score'), Max('score'), Min('score'))
-        return list(nine_stats)
+        nine_max = qs[-1]
+        nine_min = qs[0]
+        sum_scores = 0
+        for x in qs:
+            sum_scores += x.get('score')
+        nine_avg = sum_scores / len(qs)
+        return nine_max, nine_min, nine_avg
