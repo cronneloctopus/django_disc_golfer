@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Course, ScoreCard, UserProfile
-from django.contrib.auth.models import User
+from django.utils import timezone
+import datetime
 
 
 class ScoreKeeperTest(TestCase):
@@ -31,6 +32,8 @@ class ScoreKeeperTest(TestCase):
             course=self.course,
             score=62,
             baskets=18,
+            # set datetime WAY in the future toi check ordering
+            created=datetime.datetime(2020, 4, 16, 12)
         )
 
     def test_course_created(self):
@@ -44,17 +47,23 @@ class ScoreKeeperTest(TestCase):
 
     def test_get_course_avg(self):
         avg = self.userprofile.get_course_avg(
-            course=self.course
+            course=self.course, baskets=9
         )
         self.assertEqual(avg, 3)
 
     def test_get_nine_stats(self):
-        nine_max, nine_min, nine_avg = self.userprofile.get_nine_stats(
-            course=self.course
+        nine_max, nine_min, nine_avg = self.userprofile.get_scores(
+            course=self.course, baskets=9
         )
         self.assertEqual(nine_max.get('score'), 27)
         self.assertEqual(nine_min.get('score'), 27)
         self.assertEqual(nine_avg, 27)
+
+    def test_get_last_round(self):
+        last_round = self.userprofile.get_last_round(
+            course=self.course
+        )
+        self.assertEqual(last_round.score, 62)
 
     def test_course_url(self):
         pass

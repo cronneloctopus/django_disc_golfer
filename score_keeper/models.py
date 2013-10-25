@@ -50,31 +50,49 @@ class ScoreCard(models.Model):
             self.user, self.course, self.score, self.baskets
         )
 
+    class Meta:
+        ordering = ('-created',)
+
 
 class UserProfile(User):
 
     class Meta:
         proxy = True
 
-    def get_course_avg(self, course):
-        sum_scores = ScoreCard.objects.filter(course=course).aggregate(
-            Sum('score')
-        )
-        sum_baskets = ScoreCard.objects.filter(course=course).aggregate(
-            Sum('baskets')
-        )
-        return sum_scores.get('score__sum') / sum_baskets.get('baskets__sum')
+    def get_last_round(self, course=None):
+        qs = self.scorecard_set.all()
+        if course:
+            qs = qs.filter(user=self, course=course)
+        last_round = qs[0]
+        return last_round
 
-    def get_nine_stats(self, course):
-        qs = list(
-            ScoreCard.objects.values('created', 'score')
-            .filter(baskets=9)
+    def get_course_avg(self, course=None, baskets=None):
+        qs = self.scorecard_set.all()
+        if course:
+            qs = qs.filter(course=course)
+        if baskets:
+            qs = qs.filter(baskets=baskets)
+        if len(qs) > 0:
+            sum_scores = qs.aggregate(Sum('score'))
+            sum_baskets = qs.aggregate(Sum('baskets'))
+            return sum_scores.get('score__sum') / \
+                sum_baskets.get('baskets__sum')
+        else:
+            return None
+
+    def get_scores(self, course=None, baskets=None):
+        qs = self.scorecard_set \
+            .values('created', 'score') \
             .order_by('score')
-        )
-        nine_max = qs[-1]
-        nine_min = qs[0]
+        if course:
+            qs = qs.filter(course=course)
+        if baskets:
+            qs = qs.filter(baskets=baskets)
+        ql = list(qs)
+        nine_max = ql[-1]
+        nine_min = ql[0]
         sum_scores = 0
-        for x in qs:
+        for x in ql:
             sum_scores += x.get('score')
         nine_avg = sum_scores / len(qs)
         return nine_max, nine_min, nine_avg

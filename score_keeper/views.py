@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.db.models import Avg, Max, Min
 
-from .models import Course, ScoreCard
+from .models import Course, ScoreCard, UserProfile
 from .forms import ScoreModelForm
 
 
@@ -111,20 +111,14 @@ def CourseDetail(request, slug, template_name='course_detail.html'):
 
     # get course data
     if request.user.is_authenticated():
-        all_scores = ScoreCard.objects.all().filter(course=course).filter(
-            user=request.user
-        ).order_by('-created')
-
-        # get all the score data we need!
-        if len(all_scores) > 0:
-            nine_scores, eighteen_scores = get_scores_by_round(
-                user=request.user, course=course
-            )
+        # get nine scores
+        profile = UserProfile.objects.get(user=request.user)
+        nine_max, nine_min, nine_avg = profile.get_nine_stats()
     return render_to_response(template_name, {
         'title': 'Course Detail -' + course.name,
         'course': course,
         'form': form,
-        'nine_scores': nine_scores,
-        'eighteen_scores': eighteen_scores,
-        'all_scores': all_scores,
+        'nine_min': nine_min,
+        'nine_max': nine_max,
+        'nine_avg': nine_avg,
     }, RequestContext(request))
